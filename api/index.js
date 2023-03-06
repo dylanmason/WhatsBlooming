@@ -2,14 +2,15 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const config = require('../config.json');
+const apiConfig = require('./apiConfig.json');
+//different config file
 
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50 mb', extended: true}));
 
 const connectDB = () => {
     try {
-        mongoose.connect(`${config.DATABASE_URL}`, {
+        mongoose.connect(`${apiConfig.DATABASE_URL}`, {
             useUnifiedTopology: true,
             useNewUrlParser: true
         });
