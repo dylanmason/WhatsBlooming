@@ -1,0 +1,58 @@
+import React from "react";
+import { useState } from "react";
+import {
+    VStack,
+    Box,
+    Text,
+    FormControl,
+    Input,
+} from "native-base"
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+export default function Post() {
+    const [flowerName, setFlowerName] = useState<string>("");
+    const [date, setDate] = useState<Date>(new Date());
+    const [show, setShow] = useState<boolean>(false);
+
+    const onChange = (selectedDate: Date) => {
+        setShow(false);
+        setDate(selectedDate);
+    }
+
+    const Fields = () => {
+        return (
+            <VStack justifyContent='center' alignItems='center' flex={1} space={3}>
+            <Box>
+            <FormControl isRequired>
+            <FormControl.Label>Flower name</FormControl.Label>
+            <Input variant="rounded" placeholder="Name"></Input>
+            </FormControl>
+            </Box>
+            <Box>
+            <FormControl isRequired>
+            <FormControl.Label>Date</FormControl.Label>
+            <DateTimePicker 
+            value={date} 
+            onChange={() => {
+                setDate(date);
+                console.log(date);
+            }}
+            mode='date' 
+            display="spinner" />
+            </FormControl>
+            </Box>
+            <Box>
+            <Text>
+            {new Date(date).toString()}
+            </Text>
+            </Box>
+            </VStack>
+        );
+    }
+
+    return (
+        <Box justifyContent='center' alignItems='center' flex={1}>
+        <Fields />
+        </Box>
+    )
+}

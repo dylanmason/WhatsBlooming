@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   Link,
@@ -12,76 +12,47 @@ import {
   VStack,
   Box,
 } from "native-base";
-import NativeBaseIcon from "./components/NativeBaseIcon";
+import SignIn from './components/SignIn';
+import Home from './components/Home';
+import Post from './components/Post';
+import Settings from './components/Settings';
+import NewUser from './components/NewUser';
+import PostList from "./components/PostList";
+import UserProfile from "./components/UserProfile";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { getAuthToken } from "./components/asyncStorage";
 
-// Define the config
-const config = {
-  useSystemColorMode: false,
-  initialColorMode: "dark",
-};
+const Stack = createNativeStackNavigator();
 
-// extend the theme
-export const theme = extendTheme({ config });
-type MyThemeType = typeof theme;
-declare module "native-base" {
-  interface ICustomTheme extends MyThemeType {}
-}
 export default function App() {
-  return (
-    <NativeBaseProvider>
-      <Center
-        _dark={{ bg: "blueGray.900" }}
-        _light={{ bg: "blueGray.50" }}
-        px={4}
-        flex={1}
-      >
-        <VStack space={5} alignItems="center">
-          <NativeBaseIcon />
-          <Heading size="lg">Welcome to NativeBase</Heading>
-          <HStack space={2} alignItems="center">
-            <Text>Edit</Text>
-            <Box
-              _web={{
-                _text: {
-                  fontFamily: "monospace",
-                  fontSize: "sm",
-                },
-              }}
-              px={2}
-              py={1}
-              _dark={{ bg: "blueGray.800" }}
-              _light={{ bg: "blueGray.200" }}
-            >
-              App.js
-            </Box>
-            <Text>and save to reload.</Text>
-          </HStack>
-          <Link href="https://docs.nativebase.io" isExternal>
-            <Text color="primary.500" underline fontSize={"xl"}>
-              Learn NativeBase
-            </Text>
-          </Link>
-          <ToggleDarkMode />
-        </VStack>
-      </Center>
-    </NativeBaseProvider>
-  );
-}
 
-// Color Switch Component
-function ToggleDarkMode() {
-  const { colorMode, toggleColorMode } = useColorMode();
-  return (
-    <HStack space={2} alignItems="center">
-      <Text>Dark</Text>
-      <Switch
-        isChecked={colorMode === "light"}
-        onToggle={toggleColorMode}
-        aria-label={
-          colorMode === "light" ? "switch to dark mode" : "switch to light mode"
-        }
-      />
-      <Text>Light</Text>
-    </HStack>
+    let token;
+
+    useEffect(() => {
+        (async () => {
+            let token = await getAuthToken();
+            console.log("token in app.tsx is", token);
+        })();
+    }, []);
+
+    return (
+        <NativeBaseProvider>
+        <NavigationContainer>
+        <Stack.Navigator
+        initialRouteName={token !== null ? "Home" : "SignIn"}
+        screenOptions={{
+            headerShown: false,
+        }}>
+        <Stack.Screen name="SignIn" component={SignIn} />
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Post" component={Post} />
+        <Stack.Screen name="Settings" component={Settings} />
+        <Stack.Screen name="NewUser" component={NewUser} />
+        <Stack.Screen name="PostList" component={PostList} />
+        <Stack.Screen name="UserProfile" component={UserProfile} />
+        </Stack.Navigator>
+        </NavigationContainer> 
+        </NativeBaseProvider>
   );
 }
