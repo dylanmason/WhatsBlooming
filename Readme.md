@@ -1,9 +1,3 @@
-# NativeBase TypeScript Expo Template
+# What's Blooming🌻
 
-The official NativeBase TypeScript template for [Expo](https://docs.expo.io/)
-
-## Usage
-
-```sh
-expo init my-app --template @native-base/expo-template-typescript
-```
+The *What's Blooming* app is a project that allows users to see in real time what flowers are blooming in their immediate area, and in surrounding areas. The app is designed so that the data comes from users rather than a static database. Due to this, the information is far more accurate. 
