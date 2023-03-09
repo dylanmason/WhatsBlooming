@@ -35,7 +35,7 @@ export default function Post({ route, navigation }: any) {
     const [show, setShow] = useState<boolean>(false);
     const [latitude, setLatitude] = useState<any>(route.params.latitude);
     const [longitude, setLongitude] = useState<any>(route.params.longitude);
-    const [image, setImage] = useState<any>("https://cdn.pixabay.com/photo/2018/11/13/21/43/instagram-3814055_960_720.png");
+    const [images, setImages] = useState<any>(["https://cdn.pixabay.com/photo/2018/11/13/21/43/instagram-3814055_960_720.png"]);
     const emojis = ['🐝', '🌻', '🌷', '💐', '🌹'];
 
     const toast = useToast();
@@ -43,7 +43,7 @@ export default function Post({ route, navigation }: any) {
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
+            allowsMultipleSelection: true,
             aspect: [4, 3],
             quality: 1,
             base64: true,
@@ -53,7 +53,11 @@ export default function Post({ route, navigation }: any) {
 
         if (!result.canceled) {
             // console.log(result.assets[0].base64);
-            setImage('data:image/png;base64,' + result.assets[0].base64);
+            let arr:any = [];
+            const base64Conversion = result?.assets.map(uri => {
+                arr.push('data:image/png;base64,' + uri.base64);
+            })
+            setImages(arr);
         }
     };
 
@@ -65,7 +69,7 @@ export default function Post({ route, navigation }: any) {
 
     useEffect(() => {
         // console.log(image);
-    }, [image])
+    }, [images])
     
     const post = async() => {
         // console.log(image);
@@ -77,7 +81,7 @@ export default function Post({ route, navigation }: any) {
                 userName: userName,
                 flowerName: flowerName,
                 icon: icon,
-                image: image,
+                images: images,
         }
         console.log(data.latitude);
         const response = await fetch(`${config.UPLOADPOST_HEROKU_API}`, {
@@ -198,7 +202,7 @@ export default function Post({ route, navigation }: any) {
         <Center>
         <Link onPress={pickImage}>
         <Box shadow="5">
-        <Image source={{uri: image}} alt="Flower picture" size={150} mb="5%" borderRadius={100}/>
+        <Image source={{uri: images[0]}} alt="Flower picture" size={150} mb="5%" borderRadius={100}/>
         </Box>
         </Link>
         </Center>

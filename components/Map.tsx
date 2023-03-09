@@ -18,7 +18,7 @@ export default function Map(props: any) {
     const [selectedUserName, setSelectedUserName] = useState<string>("");
     const [dateFound, setDateFound] = useState<string>("");
     const [flowerName, setFlowerName] = useState<string>("");
-    const [flowerImage, setFlowerImage] = useState<string>("https://cdn.pixabay.com/photo/2018/11/13/21/43/instagram-3814055_960_720.png");
+    const [flowerImages, setFlowerImages] = useState<string>(["https://cdn.pixabay.com/photo/2018/11/13/21/43/instagram-3814055_960_720.png"]);
     
     const emojis = ['🐝', '🌻', '🌷', '💐', '🌹'];
     interface Props {
@@ -43,7 +43,7 @@ export default function Map(props: any) {
             <Modal.CloseButton />
             <Modal.Header>Blooming Data</Modal.Header>
             <Center padding={5}>
-            <Image source={{uri: flowerImage}} alt="Flower picture" size={150} borderRadius={100}></Image>
+            <Image source={{uri: flowerImages[0]}} alt="Flower picture" size={150} borderRadius={100}></Image>
             </Center>
             <Box pl={5} pr={5} pb={5}>
             <Text><Text bold>User:</Text> {selectedUserName}</Text>
@@ -71,7 +71,12 @@ export default function Map(props: any) {
                         setSelectedUserName(item.userName);
                         setFlowerName(item.flowerName);
                         setDateFound(item.date);
-                        setFlowerImage(item.image);
+                        let base64Conversion = [];
+                        item?.images.map((item: any) => {
+                            base64Conversion.push(item)
+                        });
+                        console.log(base64Conversion.length);
+                        setFlowerImages(base64Conversion);
                         setModalOpened(true)}
                     }
                     >

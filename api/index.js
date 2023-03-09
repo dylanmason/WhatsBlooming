@@ -23,16 +23,16 @@ const connectDB = () => {
 
 connectDB();
 
-const userCluster = new mongoose.Schema({ userName: 'String', password: 'String', profilePicture: 'String' }, { versionKey: false });
+const userCluster = new mongoose.Schema({ userName: String, password: String, profilePicture: String }, { versionKey: false });
 const userDB = mongoose.model('Users', userCluster);
 
-const userData = new mongoose.Schema({ userName: 'String', flowerName: 'String', date: 'String', latitude: 'Number', longitude: 'Number', icon: 'String', image: 'String' }, { versionKey: false });
+const userData = new mongoose.Schema({ userName: String, flowerName: String, date: String, latitude: Number, longitude: Number, icon: String, images: [String] }, { versionKey: false });
 const dataDB = mongoose.model('Data', userData);
 
 app.get('/api/userAuthentication', async (req, res) => {
     try {
         const userCredentials = await userDB.findOne({
-            userName: `${req.query.userName}`,
+            userName: req.query.userName,
         });
         if (userCredentials === null) {
             console.log("user not found");
@@ -68,14 +68,14 @@ app.post('/api/userSignUp', (req, res) => {
         bcrypt.hash(req.body.password, saltRounds, async (err, hash) => {
             try {
                 const found = await userDB.findOne({
-                    userName: `${req.body.userName}`,
+                    userName: req.body.userName,
                 });
                 if (found === null) {
                     const userCredentials = await userDB.create({
             _id: mongoose.Types.ObjectId(),
-                        userName: `${req.body.userName}`,
-                        password: `${hash}`,
-                        profilePicture: `${req.body.profilePicture}`
+                        userName: req.body.userName,
+                        password: hash,
+                        profilePicture: req.body.profilePicture,
                     });
                     const match = {
                         "found": "available"
@@ -103,18 +103,17 @@ app.post('/api/uploadPost', async (req, res) => {
     const userName = req.body.userName;
     const flowerName = req.body.flowerName;
     const icon = req.body.icon;
-    const image = req.body.image;
-    console.log('image is:', image);
+    const images = req.body.images;
     try {
         const postData = await dataDB.create({
             _id: mongoose.Types.ObjectId(),
-            userName: `${userName}`,
-            flowerName: `${flowerName}`,
-            date: `${date}`,
-            latitude: `${latitude}`,
-            longitude: `${longitude}`,
-            icon: `${icon}`,
-            image: `${image}`,
+            userName: userName,
+            flowerName: flowerName,
+            date: date,
+            latitude: latitude,
+            longitude: longitude,
+            icon: icon,
+            images: images,
         })
         const status = {
             "status": "success"
@@ -147,10 +146,10 @@ app.post('/api/updateAccount', async (req, res) => {
     bcrypt.hash(password, saltRounds, async (err, hash) => {
         try {
             const found = await userDB.findOne({
-                userName: `${req.query.userName}`,
+                userName: req.query.userName,
             });
             if (found === null) {
-                const update = await userDB.replaceOne({ userName: `${oldUserName}` }, { userName: `${newUserName}`, password: `${hash}`, profilePicture: `${profilePicture}` });
+                const update = await userDB.replaceOne({ userName: oldUserName }, { userName: newUserName, password: hash, profilePicture: profilePicture });
                 match = {
                     "found": "available"
                 }
@@ -174,7 +173,7 @@ app.get('/api/userInfo', async (req, res) => {
     console.log("searching for", userName);
     try {
         const userInfo = await userDB.findOne({
-            userName: `${userName}`
+            userName: userName
         });
         console.log("here is the userInfo", userInfo);
         res.send(userInfo);
@@ -188,7 +187,7 @@ app.get('/api/userPostData', async (req, res) => {
     const userName = req.query.userName;
     try {
         const userPosts = await dataDB.find({
-            userName: `${userName}`
+            userName: userName
         });
         console.log(userPosts);
         res.send(userPosts);

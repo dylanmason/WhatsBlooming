@@ -70,7 +70,7 @@ export default function PostList(props:any) {
                     <Text><Text bold>Date Found:</Text> {item.date}</Text>
                     </Box>
                     <Box justifyContent='center' >
-                    <Image source={{uri: item.image}} alt="Flower picture" size={75} borderRadius={75}></Image>
+                    <Image source={{uri: item.images[0]}} alt="Flower picture" size={75} borderRadius={75}></Image>
                     </Box>
                     </HStack>
                     </Link>
