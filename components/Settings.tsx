@@ -21,6 +21,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'; 
 import * as ImagePicker from 'expo-image-picker';
 import {getAuthToken, removeAuthToken} from "./asyncStorage";
+import config from '../config.json';
 
 export default function Settings({ route, navigation }: any) {
     
@@ -55,14 +56,14 @@ export default function Settings({ route, navigation }: any) {
             password: password,
             profilePicture: image,
         }
-        const response = await fetch(`http://whatsbloomingcapstone.herokuapp.com/api/updateAccount`, {
+        const response = await fetch(`${config.UPDATEACCOUNT_HEROKU_API}`, {
             method: 'post',
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(data)
         });
-        // const response = await fetch(`http://192.168.1.57:3000/api/updateAccount`, {
+        // const response = await fetch(`${config.UPDATEACCOUNT_LOCAL_API}`, {
         //     method: 'post',
         //     headers: {
         //         "Content-Type": "application/json"
