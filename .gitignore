@@ -1,6 +1,7 @@
 config.json
 apiConfig.json
 node_modules/
+.yarn/
 .expo/
 npm-debug.*
 *.jks
