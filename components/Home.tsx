@@ -41,6 +41,8 @@ export default function Home({ route, navigation }: any) {
                 setUserName(token);
             }
 
+            console.log(userName);
+
             let { status } = await Location.requestForegroundPermissionsAsync();
 
             if (status !== 'granted') {

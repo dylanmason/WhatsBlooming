@@ -84,20 +84,20 @@ export default function Post({ route, navigation }: any) {
                 images: images,
         }
         console.log(data.latitude);
-        const response = await fetch(`${config.UPLOADPOST_HEROKU_API}`, {
-            method: 'post',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        });
-        // const response = await fetch(`${config.UPLOADPOST_LOCAL_API}`, {
+        // const response = await fetch(`${config.UPLOADPOST_HEROKU_API}`, {
         //     method: 'post',
         //     headers: {
         //         "Content-Type": "application/json"
         //     },
         //     body: JSON.stringify(data)
         // });
+        const response = await fetch(`${config.UPLOADPOST_LOCAL_API}`, {
+            method: 'post',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
         toast.show({
             render : () => {
                 return (

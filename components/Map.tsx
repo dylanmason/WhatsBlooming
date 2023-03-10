@@ -9,6 +9,7 @@ import {
     Image,
 } from "native-base";
 import config from '../config.json';
+import ImageCarousel from "./ImageCarousel";
 
 export default function Map(props: any) {
     const [modalOpened, setModalOpened] = useState<boolean>(false);
@@ -18,7 +19,7 @@ export default function Map(props: any) {
     const [selectedUserName, setSelectedUserName] = useState<string>("");
     const [dateFound, setDateFound] = useState<string>("");
     const [flowerName, setFlowerName] = useState<string>("");
-    const [flowerImages, setFlowerImages] = useState<string>(["https://cdn.pixabay.com/photo/2018/11/13/21/43/instagram-3814055_960_720.png"]);
+    const [flowerImages, setFlowerImages] = useState<any>(["https://cdn.pixabay.com/photo/2018/11/13/21/43/instagram-3814055_960_720.png"]);
     
     const emojis = ['🐝', '🌻', '🌷', '💐', '🌹'];
     interface Props {
@@ -28,8 +29,8 @@ export default function Map(props: any) {
     
     useEffect(() => {
         (async () => {
-            const response = await fetch(`${config.GATHERPOSTS_HEROKU_API}`);
-            // const response = await fetch(`${config.GATHERPOSTS_LOCAL_API}`);
+            // const response = await fetch(`${config.GATHERPOSTS_HEROKU_API}`);
+            const response = await fetch(`${config.GATHERPOSTS_LOCAL_API}`);
             const list: any = await response.json();
             // console.log(list);
             setCoordinateData(list);
@@ -43,7 +44,7 @@ export default function Map(props: any) {
             <Modal.CloseButton />
             <Modal.Header>Blooming Data</Modal.Header>
             <Center padding={5}>
-            <Image source={{uri: flowerImages[0]}} alt="Flower picture" size={150} borderRadius={100}></Image>
+            <ImageCarousel images={flowerImages} />
             </Center>
             <Box pl={5} pr={5} pb={5}>
             <Text><Text bold>User:</Text> {selectedUserName}</Text>
@@ -71,11 +72,10 @@ export default function Map(props: any) {
                         setSelectedUserName(item.userName);
                         setFlowerName(item.flowerName);
                         setDateFound(item.date);
-                        let base64Conversion = [];
+                        let base64Conversion:any = [];
                         item?.images.map((item: any) => {
                             base64Conversion.push(item)
                         });
-                        console.log(base64Conversion.length);
                         setFlowerImages(base64Conversion);
                         setModalOpened(true)}
                     }

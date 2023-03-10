@@ -59,20 +59,20 @@ export default function NewUser({navigation}: {navigation: any}) {
         }
 
         if (!emptyUserName && !emptyPassword) {
-            // const credentials = await fetch(`${config.USERSIGNUP_HEROKU_API}`, {
-            //     method: 'post',
-            //     headers: {
-            //         "Content-Type": "application/json"
-            //     },
-            //     body: JSON.stringify(data)
-            // });
-            const credentials = await fetch(`${config.USERSIGNUP_LOCAL_API}`, {
+            const credentials = await fetch(`${config.USERSIGNUP_HEROKU_API}`, {
                 method: 'post',
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(data)
             });
+            // const credentials = await fetch(`${config.USERSIGNUP_LOCAL_API}`, {
+            //     method: 'post',
+            //     headers: {
+            //         "Content-Type": "application/json"
+            //     },
+            //     body: JSON.stringify(data)
+            // });
             const response = await credentials.json();
             console.log(response);
             if (response.found === "available") {

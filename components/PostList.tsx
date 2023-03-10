@@ -27,8 +27,8 @@ export default function PostList(props:any) {
    
     useEffect(() => {
         (async () => {
-            const response = await fetch(`${config.GATHERPOSTS_HEROKU_API}`);
-            // const response = await fetch(`${config.GATHERPOSTS_LOCAL_API}`);
+            // const response = await fetch(`${config.GATHERPOSTS_HEROKU_API}`);
+            const response = await fetch(`${config.GATHERPOSTS_LOCAL_API}`);
             let list: any = await response.json();
             list = list.reverse();
             // console.log(list);
@@ -37,12 +37,12 @@ export default function PostList(props:any) {
     }, []);
 
     const getUserData = async (userName: string) => {
-            // const userInfoRes = await fetch(`${config.USERINFO_LOCAL_API}?userName=${userName}`);
-            const userInfoRes = await fetch(`${config.USERINFO_HEROKU_API}?userName=${userName}`);
+            const userInfoRes = await fetch(`${config.USERINFO_LOCAL_API}?userName=${userName}`);
+            // const userInfoRes = await fetch(`${config.USERINFO_HEROKU_API}?userName=${userName}`);
             const userInfo = await userInfoRes.json();
             setUserAvatar(userInfo.profilePicture);
-            // const userPostsRes = await fetch(`${config.USERPOSTDATA_LOCAL_API}?userName=${userName}`);
-            const userPostsRes = await fetch(`${config.USERPOSTDATA_HEROKU_API}?userName=${userName}`);
+            const userPostsRes = await fetch(`${config.USERPOSTDATA_LOCAL_API}?userName=${userName}`);
+            // const userPostsRes = await fetch(`${config.USERPOSTDATA_HEROKU_API}?userName=${userName}`);
             const userPosts = await userPostsRes.json();
             setPosts(userPosts);
     }

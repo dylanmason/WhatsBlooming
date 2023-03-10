@@ -36,8 +36,8 @@ export default function SignIn({navigation}: {navigation: any}) {
 
     const pressed = async () => {
         if (!emptyUserName && !emptyPassword) {
-            const credentials = await fetch(`${config.USERAUTHENTICATION_HEROKU_API}?userName=${userName}&password=${password}`);
-            // const credentials = await fetch(`${config.USERAUTHENTICATION_LOCAL_API}?userName=${userName}&password=${password}`);
+            // const credentials = await fetch(`${config.USERAUTHENTICATION_HEROKU_API}?userName=${userName}&password=${password}`);
+            const credentials = await fetch(`${config.USERAUTHENTICATION_LOCAL_API}?userName=${userName}&password=${password}`);
             const response = await credentials.json();
             // console.log(response);
             if (response.found === "true") {
